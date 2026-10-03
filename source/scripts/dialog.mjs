@@ -1,0 +1,11 @@
+import { chromium } from "playwright-core"
+const b = await chromium.launch({ executablePath: "/usr/bin/google-chrome", args: ["--no-sandbox"] })
+const p = await (await b.newContext({ viewport: { width: 440, height: 900 }, deviceScaleFactor: 2 })).newPage()
+await p.goto("file:///workspace/sidelinereel-proto/dist/index.html")
+await p.getByTestId("review-f1").getByRole("button", { name: "Reassign" }).click()
+await p.waitForTimeout(400); await p.screenshot({ path: "/workspace/proto-shots/coach-reassign-dialog.png" })
+await p.keyboard.press("Escape")
+await p.getByRole("tab", { name: "Parent" }).click()
+await p.getByTestId("reel-a9").getByRole("button", { name: "This isn't my kid" }).click()
+await p.waitForTimeout(400); await p.screenshot({ path: "/workspace/proto-shots/parent-report-dialog.png" })
+await b.close()
